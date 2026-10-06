@@ -1,0 +1,2041 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="description" content="Skill2Bridge — Practical digital skills, projects, mentorship and employability support for NOUN students." />
+  <title>Skill2Bridge | NOUN Enugu</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: "#eff6ff",
+              100: "#dbeafe",
+              500: "#2563eb",
+              600: "#1d4ed8",
+              700: "#1e40af",
+              900: "#172554"
+            }
+          },
+          boxShadow: {
+            soft: "0 10px 35px rgba(15, 23, 42, 0.08)"
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: #f8fafc;
+    }
+
+    .hidden-view {
+      display: none !important;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .progress-fill {
+      transition: width 0.6s ease;
+    }
+
+    .drop-zone.drag-over {
+      border-color: #2563eb;
+      background: #eff6ff;
+      transform: scale(1.01);
+    }
+
+    .sidebar-transition {
+      transition: transform 0.25s ease;
+    }
+
+    @media (max-width: 767px) {
+      .mobile-sidebar-hidden {
+        transform: translateX(-100%);
+      }
+
+      .mobile-sidebar-visible {
+        transform: translateX(0);
+      }
+    }
+
+    /* -------------------------------------------------------
+       POLISHED IN-APP NOTIFICATION SYSTEM
+       ------------------------------------------------------- */
+
+    .app-toast {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 9999;
+      width: min(420px, calc(100vw - 2rem));
+      pointer-events: none;
+      opacity: 0;
+      transform: translate3d(0, -16px, 0) scale(0.98);
+      transition: opacity 220ms ease, transform 220ms ease;
+    }
+
+    .app-toast.is-visible {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+      pointer-events: auto;
+    }
+
+    .app-toast-card {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.875rem;
+      padding: 1rem;
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.16);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .app-toast-icon {
+      display: grid;
+      place-items: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      flex: 0 0 2.5rem;
+      border-radius: 0.75rem;
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    .app-toast-content {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .app-toast-title {
+      margin: 0;
+      color: #0f172a;
+      font-size: 0.95rem;
+      line-height: 1.35;
+      font-weight: 800;
+    }
+
+    .app-toast-message {
+      margin: 0.2rem 0 0;
+      color: #64748b;
+      font-size: 0.84rem;
+      line-height: 1.5;
+    }
+
+    .app-toast-close {
+      display: grid;
+      place-items: center;
+      width: 2rem;
+      height: 2rem;
+      flex: 0 0 2rem;
+      border: 0;
+      border-radius: 0.625rem;
+      background: transparent;
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 1.25rem;
+      line-height: 1;
+      transition: background 150ms ease, color 150ms ease;
+    }
+
+    .app-toast-close:hover {
+      background: #f1f5f9;
+      color: #334155;
+    }
+
+    .app-toast-close:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, 0.22);
+      outline-offset: 2px;
+    }
+
+    .app-toast-progress {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      transform-origin: left center;
+      transform: scaleX(1);
+    }
+
+    .app-toast.is-visible .app-toast-progress {
+      animation: toastProgress var(--toast-duration, 4000ms) linear forwards;
+    }
+
+    @keyframes toastProgress {
+      from { transform: scaleX(1); }
+      to { transform: scaleX(0); }
+    }
+
+    .app-toast[data-type="success"] .app-toast-icon {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .app-toast[data-type="success"] .app-toast-progress {
+      background: #22c55e;
+    }
+
+    .app-toast[data-type="info"] .app-toast-icon {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .app-toast[data-type="info"] .app-toast-progress {
+      background: #2563eb;
+    }
+
+    .app-toast[data-type="warning"] .app-toast-icon {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .app-toast[data-type="warning"] .app-toast-progress {
+      background: #f59e0b;
+    }
+
+    .app-toast[data-type="error"] .app-toast-icon {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .app-toast[data-type="error"] .app-toast-progress {
+      background: #ef4444;
+    }
+
+    @media (max-width: 640px) {
+      .app-toast {
+        top: 0.75rem;
+        right: 0.75rem;
+        left: 0.75rem;
+        width: auto;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .app-toast {
+        transition: opacity 150ms ease;
+        transform: none;
+      }
+
+      .app-toast.is-visible {
+        transform: none;
+      }
+
+      .app-toast.is-visible .app-toast-progress {
+        animation: none;
+      }
+    }
+
+  </style>
+</head>
+
+<body class="text-slate-800">
+  <!-- =========================================================
+       IN-APP NOTIFICATION / TOAST
+       ========================================================= -->
+  <div
+    id="appToast"
+    class="app-toast"
+    data-type="success"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+    aria-hidden="true"
+  >
+    <div class="app-toast-card">
+      <div id="toastIcon" class="app-toast-icon" aria-hidden="true">✓</div>
+
+      <div class="app-toast-content">
+        <p id="toastTitle" class="app-toast-title">Success</p>
+        <p id="toastMessage" class="app-toast-message">Action completed successfully.</p>
+      </div>
+
+      <button
+        id="toastClose"
+        class="app-toast-close"
+        type="button"
+        aria-label="Dismiss notification"
+      >
+        ×
+      </button>
+
+      <div id="toastProgress" class="app-toast-progress" aria-hidden="true"></div>
+    </div>
+  </div>
+
+
+
+  <!-- =========================================================
+       AUTH / LANDING VIEW
+       ========================================================= -->
+  <section id="authView" class="min-h-screen bg-slate-950 text-white">
+    <div class="min-h-screen flex flex-col lg:flex-row">
+
+      <!-- Hero -->
+      <div class="lg:w-3/5 relative overflow-hidden flex items-center">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-950 via-slate-950 to-indigo-950"></div>
+
+        <div class="absolute -top-32 -right-32 w-80 h-80 rounded-full bg-blue-600/20 blur-3xl"></div>
+        <div class="absolute bottom-0 -left-20 w-96 h-96 rounded-full bg-indigo-500/10 blur-3xl"></div>
+
+        <div class="relative z-10 px-6 py-12 sm:px-10 lg:px-16 xl:px-24 max-w-4xl">
+          <div class="flex items-center gap-3 mb-10">
+            <div class="w-11 h-11 rounded-xl bg-blue-600 flex items-center justify-center font-bold text-xl">
+              S
+            </div>
+            <div>
+              <p class="font-bold text-lg">Skill2Bridge</p>
+              <p class="text-xs text-slate-400">NOUN • Enugu Study Centre</p>
+            </div>
+          </div>
+
+          <span class="inline-flex items-center gap-2 rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-2 text-sm text-blue-200 mb-6">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            Digital Career Readiness Platform
+          </span>
+
+          <h1 class="text-4xl sm:text-5xl xl:text-6xl font-extrabold leading-tight tracking-tight">
+            Transitioning NOUN Enugu Finalists from Degrees to
+            <span class="text-blue-400">High-Income Digital Careers.</span>
+          </h1>
+
+          <p class="mt-6 text-lg leading-8 text-slate-300 max-w-2xl">
+            Build practical digital and AI skills, work on real-world projects,
+            create a professional portfolio, and become career-ready before graduation.
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-10">
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <div class="text-2xl mb-2">🎓</div>
+              <p class="font-semibold">Practical Skills</p>
+              <p class="text-xs text-slate-400 mt-1">Learn beyond theory.</p>
+            </div>
+
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <div class="text-2xl mb-2">🚀</div>
+              <p class="font-semibold">Real Projects</p>
+              <p class="text-xs text-slate-400 mt-1">Build evidence of ability.</p>
+            </div>
+
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <div class="text-2xl mb-2">💼</div>
+              <p class="font-semibold">Career Portfolio</p>
+              <p class="text-xs text-slate-400 mt-1">Show employers what you can do.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Login -->
+      <div class="lg:w-2/5 bg-white text-slate-900 flex items-center justify-center px-6 py-12">
+        <div class="w-full max-w-md">
+
+          <div class="mb-8">
+            <p class="text-sm font-semibold text-blue-600 mb-2">STUDENT ACCESS</p>
+            <h2 class="text-3xl font-bold">Welcome to Skill2Bridge</h2>
+            <p class="text-slate-500 mt-2">
+              Sign in to continue your digital career journey.
+            </p>
+          </div>
+
+          <form id="loginForm" class="space-y-5">
+
+            <div>
+              <label for="studentName" class="block text-sm font-semibold mb-2">
+                Full Name
+              </label>
+              <input
+                id="studentName"
+                type="text"
+                value="Rosemary Chisom"
+                required
+                class="w-full rounded-xl border border-slate-300 px-4 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                placeholder="Enter your full name"
+              />
+            </div>
+
+            <div>
+              <label for="studentEmail" class="block text-sm font-semibold mb-2">
+                Student Email
+              </label>
+              <input
+                id="studentEmail"
+                type="email"
+                value="student@example.com"
+                required
+                class="w-full rounded-xl border border-slate-300 px-4 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                placeholder="name@example.com"
+              />
+            </div>
+
+            <div>
+              <label for="studentPassword" class="block text-sm font-semibold mb-2">
+                Password
+              </label>
+              <input
+                id="studentPassword"
+                type="password"
+                value="skill2bridge"
+                required
+                minlength="6"
+                class="w-full rounded-xl border border-slate-300 px-4 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                placeholder="Enter password"
+              />
+            </div>
+
+            <button
+              type="submit"
+              class="w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 transition shadow-lg shadow-blue-600/20"
+            >
+              Enter My Dashboard
+            </button>
+          </form>
+
+          <p class="text-xs text-slate-400 text-center mt-6">
+            MVP demonstration • Authentication is simulated locally.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =========================================================
+       APPLICATION
+       ========================================================= -->
+  <div id="appView" class="hidden-view min-h-screen">
+
+    <!-- Mobile overlay -->
+    <div
+      id="sidebarOverlay"
+      class="hidden fixed inset-0 bg-slate-950/50 z-30 md:hidden"
+    ></div>
+
+    <!-- Sidebar -->
+    <aside
+      id="sidebar"
+      class="sidebar-transition mobile-sidebar-hidden md:mobile-sidebar-visible fixed md:fixed inset-y-0 left-0 z-40 w-72 bg-slate-950 text-white flex flex-col"
+    >
+      <div class="h-20 flex items-center px-6 border-b border-white/10">
+        <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center font-bold text-lg">
+          S
+        </div>
+        <div class="ml-3">
+          <p class="font-bold">Skill2Bridge</p>
+          <p class="text-xs text-slate-400">NOUN Enugu</p>
+        </div>
+
+        <button
+          id="closeSidebar"
+          class="ml-auto md:hidden text-slate-400 hover:text-white text-2xl"
+          aria-label="Close navigation"
+        >
+          ×
+        </button>
+      </div>
+
+      <nav class="flex-1 p-4 space-y-2">
+
+        <button
+          data-view="dashboard"
+          class="nav-button w-full flex items-center gap-3 rounded-xl px-4 py-3 text-left bg-blue-600 text-white"
+        >
+          <span>📊</span>
+          <span class="font-medium">Student Dashboard</span>
+        </button>
+
+        <button
+          data-view="projects"
+          class="nav-button w-full flex items-center gap-3 rounded-xl px-4 py-3 text-left text-slate-300 hover:bg-white/10"
+        >
+          <span>🚀</span>
+          <span class="font-medium">The Project Arena</span>
+        </button>
+
+        <button
+          data-view="portfolio"
+          class="nav-button w-full flex items-center gap-3 rounded-xl px-4 py-3 text-left text-slate-300 hover:bg-white/10"
+        >
+          <span>💼</span>
+          <span class="font-medium">Portfolio Builder</span>
+        </button>
+      </nav>
+
+      <div class="p-4 border-t border-white/10">
+        <div class="rounded-xl bg-white/5 p-4">
+          <p class="text-xs text-slate-400">Your current track</p>
+          <p class="font-semibold mt-1">AI & Digital Careers</p>
+
+          <div class="mt-3 h-1.5 bg-white/10 rounded-full overflow-hidden">
+            <div class="h-full bg-blue-500 rounded-full" style="width: 68%"></div>
+          </div>
+
+          <p class="text-xs text-slate-400 mt-2">68% completed</p>
+        </div>
+
+        <button
+          id="logoutButton"
+          class="w-full mt-4 flex items-center gap-3 rounded-xl px-4 py-3 text-slate-400 hover:bg-red-500/10 hover:text-red-300 transition"
+        >
+          <span>↪</span>
+          <span>Log Out</span>
+        </button>
+      </div>
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="md:ml-72 min-h-screen">
+
+      <!-- Top bar -->
+      <header class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-slate-200">
+        <div class="h-20 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+
+          <div class="flex items-center gap-3">
+            <button
+              id="openSidebar"
+              class="md:hidden w-10 h-10 rounded-xl border border-slate-200 flex items-center justify-center"
+              aria-label="Open navigation"
+            >
+              ☰
+            </button>
+
+            <div>
+              <p class="text-xs uppercase tracking-wider text-slate-400 font-semibold">
+                Skill2Bridge
+              </p>
+              <h2 id="pageTitle" class="font-bold text-lg">Student Dashboard</h2>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="hidden sm:block text-right">
+              <p id="topStudentName" class="text-sm font-semibold">Rosemary Chisom</p>
+              <p class="text-xs text-slate-400">NOUN Enugu • Finalist</p>
+            </div>
+
+            <div
+              id="avatar"
+              class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold"
+            >
+              RC
+            </div>
+          </div>
+        </div>
+      </header>
+
+
+      <!-- =====================================================
+           VIEW 1 — STUDENT DASHBOARD
+           ===================================================== -->
+      <section id="dashboardView" class="app-page fade-in px-4 sm:px-6 lg:px-8 py-8">
+
+        <div class="max-w-7xl mx-auto">
+
+          <!-- Welcome -->
+          <div class="rounded-3xl bg-gradient-to-br from-blue-700 to-indigo-800 text-white p-6 sm:p-8 shadow-soft">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+
+              <div>
+                <p class="text-blue-200 text-sm font-semibold">
+                  GOOD EVENING, <span id="welcomeName">STUDENT</span>
+                </p>
+
+                <h1 class="text-3xl sm:text-4xl font-extrabold mt-2">
+                  Welcome, NOUN Enugu Student! 👋
+                </h1>
+
+                <p class="text-blue-100 mt-3 max-w-2xl leading-7">
+                  Your degree is valuable. Skill2Bridge helps you turn what you know
+                  into practical evidence employers and clients can see.
+                </p>
+
+                <button
+                  id="continueLearningButton"
+                  class="mt-6 bg-white text-blue-700 font-bold px-5 py-3 rounded-xl hover:bg-blue-50 transition"
+                >
+                  Continue Learning →
+                </button>
+              </div>
+
+              <div class="lg:w-64 bg-white/10 border border-white/10 rounded-2xl p-5">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm text-blue-100">Career Readiness</span>
+                  <span class="font-bold">68%</span>
+                </div>
+
+                <div class="mt-3 h-3 bg-black/20 rounded-full overflow-hidden">
+                  <div
+                    id="careerProgress"
+                    class="progress-fill h-full bg-white rounded-full"
+                    style="width: 68%"
+                  ></div>
+                </div>
+
+                <p class="text-xs text-blue-100 mt-3">
+                  Keep completing projects and courses to unlock more badges.
+                </p>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Stats -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+              <p class="text-sm text-slate-500">Courses</p>
+              <p class="text-3xl font-extrabold mt-2">4</p>
+              <p class="text-xs text-emerald-600 mt-1">2 completed</p>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+              <p class="text-sm text-slate-500">Projects</p>
+              <p class="text-3xl font-extrabold mt-2">3</p>
+              <p class="text-xs text-blue-600 mt-1">1 active</p>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+              <p class="text-sm text-slate-500">Badges</p>
+              <p class="text-3xl font-extrabold mt-2">5</p>
+              <p class="text-xs text-purple-600 mt-1">Capability verified</p>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+              <p class="text-sm text-slate-500">Portfolio</p>
+              <p class="text-3xl font-extrabold mt-2">78%</p>
+              <p class="text-xs text-orange-600 mt-1">Almost ready</p>
+            </div>
+
+          </div>
+
+
+          <!-- Courses -->
+          <div class="flex items-center justify-between mt-10 mb-5">
+            <div>
+              <p class="text-sm text-blue-600 font-semibold">LEARNING PATH</p>
+              <h2 class="text-2xl font-bold mt-1">Recommended Courses</h2>
+            </div>
+          </div>
+
+          <div class="grid lg:grid-cols-2 gap-5">
+
+            <!-- Course 1 -->
+            <article class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-soft transition">
+              <div class="flex items-start justify-between gap-4">
+                <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center text-2xl">
+                  🤖
+                </div>
+
+                <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold">
+                  In Progress
+                </span>
+              </div>
+
+              <h3 class="text-xl font-bold mt-5">
+                Practical AI for Workplace Productivity
+              </h3>
+
+              <p class="text-slate-500 text-sm leading-6 mt-2">
+                Learn how to use generative AI for research, documentation,
+                presentations, data analysis and everyday workplace tasks.
+              </p>
+
+              <div class="mt-5 flex items-center justify-between text-sm">
+                <span class="text-slate-500">8 Modules</span>
+                <span class="font-bold text-blue-600">68% complete</span>
+              </div>
+
+              <div class="h-2 bg-slate-100 rounded-full mt-2 overflow-hidden">
+                <div class="h-full bg-blue-600 rounded-full" style="width:68%"></div>
+              </div>
+
+              <button
+                class="courseButton w-full mt-5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl py-3 font-semibold transition"
+                data-course="Practical AI for Workplace Productivity"
+              >
+                Start Learning
+              </button>
+            </article>
+
+
+            <!-- Course 2 -->
+            <article class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-soft transition">
+              <div class="flex items-start justify-between gap-4">
+                <div class="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center text-2xl">
+                  📊
+                </div>
+
+                <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">
+                  Available
+                </span>
+              </div>
+
+              <h3 class="text-xl font-bold mt-5">
+                Excel & Data Analysis for Business
+              </h3>
+
+              <p class="text-slate-500 text-sm leading-6 mt-2">
+                Build practical spreadsheet skills for reporting, decision-making,
+                dashboards and entry-level data roles.
+              </p>
+
+              <div class="mt-5 flex items-center justify-between text-sm">
+                <span class="text-slate-500">6 Modules</span>
+                <span class="font-semibold text-slate-500">Not started</span>
+              </div>
+
+              <div class="h-2 bg-slate-100 rounded-full mt-2 overflow-hidden">
+                <div class="h-full bg-purple-600 rounded-full" style="width:0%"></div>
+              </div>
+
+              <button
+                class="courseButton w-full mt-5 border border-slate-300 hover:bg-slate-50 text-slate-800 rounded-xl py-3 font-semibold transition"
+                data-course="Excel & Data Analysis for Business"
+              >
+                View Course
+              </button>
+            </article>
+
+          </div>
+
+
+          <!-- Next Steps -->
+          <div class="mt-10">
+            <h2 class="text-2xl font-bold">Your Next Steps</h2>
+
+            <div class="grid md:grid-cols-3 gap-4 mt-5">
+
+              <button
+                data-view-target="projects"
+                class="quick-nav text-left bg-white border border-slate-200 rounded-2xl p-5 hover:border-blue-400 hover:shadow-soft transition"
+              >
+                <span class="text-2xl">🚀</span>
+                <h3 class="font-bold mt-3">Complete a Project</h3>
+                <p class="text-sm text-slate-500 mt-1">
+                  Work on a real-world business challenge.
+                </p>
+              </button>
+
+              <button
+                data-view-target="portfolio"
+                class="quick-nav text-left bg-white border border-slate-200 rounded-2xl p-5 hover:border-blue-400 hover:shadow-soft transition"
+              >
+                <span class="text-2xl">💼</span>
+                <h3 class="font-bold mt-3">Build Your Portfolio</h3>
+                <p class="text-sm text-slate-500 mt-1">
+                  Turn your projects into career evidence.
+                </p>
+              </button>
+
+              <button
+                id="badgeButton"
+                class="text-left bg-white border border-slate-200 rounded-2xl p-5 hover:border-blue-400 hover:shadow-soft transition"
+              >
+                <span class="text-2xl">🏆</span>
+                <h3 class="font-bold mt-3">Earn a Badge</h3>
+                <p class="text-sm text-slate-500 mt-1">
+                  Complete learning milestones to verify your skills.
+                </p>
+              </button>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- =====================================================
+           VIEW 2 — PROJECT ARENA
+           ===================================================== -->
+      <section id="projectsView" class="app-page hidden-view fade-in px-4 sm:px-6 lg:px-8 py-8">
+
+        <div class="max-w-7xl mx-auto">
+
+          <div class="mb-8">
+            <p class="text-sm text-blue-600 font-semibold">REAL-WORLD EXPERIENCE</p>
+            <h1 class="text-3xl sm:text-4xl font-extrabold mt-1">
+              The Project Arena 🚀
+            </h1>
+            <p class="text-slate-500 mt-2 max-w-2xl">
+              Practice solving realistic business problems and create work samples
+              that can strengthen your portfolio.
+            </p>
+          </div>
+
+
+          <!-- Project hero -->
+          <article class="bg-white border border-slate-200 rounded-3xl shadow-soft overflow-hidden">
+
+            <div class="p-6 sm:p-8">
+
+              <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+
+                <div class="flex gap-4">
+                  <div class="w-14 h-14 shrink-0 rounded-2xl bg-blue-100 flex items-center justify-center text-2xl">
+                    📦
+                  </div>
+
+                  <div>
+                    <span class="inline-flex px-3 py-1 rounded-full bg-orange-50 text-orange-700 text-xs font-bold">
+                      ACTIVE BRIEF
+                    </span>
+
+                    <h2 class="text-2xl font-extrabold mt-3">
+                      Project #1: Inventory Optimization using Excel/AI for Enugu Retail Hub
+                    </h2>
+
+                    <p class="text-sm text-slate-500 mt-2">
+                      Mock Partner • Enugu Retail Hub
+                    </p>
+                  </div>
+                </div>
+
+                <span class="px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-sm font-bold whitespace-nowrap">
+                  Due in 7 days
+                </span>
+              </div>
+
+
+              <div class="grid lg:grid-cols-3 gap-5 mt-8">
+
+                <div class="lg:col-span-2">
+                  <h3 class="font-bold text-lg">Business Scenario</h3>
+
+                  <p class="text-slate-600 leading-7 mt-2">
+                    Enugu Retail Hub wants to reduce products that stay too long
+                    in stock while avoiding shortages of fast-moving items.
+                    Your task is to analyze the provided inventory data and
+                    recommend practical improvements.
+                  </p>
+
+                  <h3 class="font-bold text-lg mt-6">Expected Deliverables</h3>
+
+                  <ul class="mt-3 space-y-3 text-sm text-slate-600">
+                    <li class="flex gap-3">
+                      <span class="text-emerald-600">✓</span>
+                      <span>Clean and organize the inventory dataset in Excel.</span>
+                    </li>
+                    <li class="flex gap-3">
+                      <span class="text-emerald-600">✓</span>
+                      <span>Identify fast-moving and slow-moving products.</span>
+                    </li>
+                    <li class="flex gap-3">
+                      <span class="text-emerald-600">✓</span>
+                      <span>Use AI to support analysis and recommendations.</span>
+                    </li>
+                    <li class="flex gap-3">
+                      <span class="text-emerald-600">✓</span>
+                      <span>Submit a short business recommendation report.</span>
+                    </li>
+                  </ul>
+                </div>
+
+
+                <div class="bg-slate-50 rounded-2xl p-5">
+                  <p class="text-xs uppercase tracking-wide text-slate-400 font-bold">
+                    Project Skills
+                  </p>
+
+                  <div class="flex flex-wrap gap-2 mt-4">
+                    <span class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-medium">
+                      Excel
+                    </span>
+                    <span class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-medium">
+                      AI
+                    </span>
+                    <span class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-medium">
+                      Data Analysis
+                    </span>
+                    <span class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-medium">
+                      Business
+                    </span>
+                  </div>
+
+                  <button
+                    id="downloadBrief"
+                    class="w-full mt-6 bg-slate-900 hover:bg-slate-800 text-white rounded-xl py-3 font-bold transition"
+                  >
+                    ↓ Download Brief
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </article>
+
+
+          <!-- Upload -->
+          <div class="grid lg:grid-cols-3 gap-6 mt-6">
+
+            <div class="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-6">
+
+              <div class="flex items-center justify-between">
+                <div>
+                  <h2 class="text-xl font-bold">Submit Your Project</h2>
+                  <p class="text-sm text-slate-500 mt-1">
+                    Upload your completed work for review.
+                  </p>
+                </div>
+
+                <span class="hidden sm:inline-flex px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">
+                  PDF / XLSX / DOCX
+                </span>
+              </div>
+
+              <div
+                id="dropZone"
+                class="drop-zone mt-6 border-2 border-dashed border-slate-300 rounded-2xl p-8 sm:p-12 text-center transition cursor-pointer"
+              >
+                <div class="text-4xl">☁️</div>
+
+                <h3 class="font-bold text-lg mt-4">
+                  Drag & Drop your file here
+                </h3>
+
+                <p class="text-sm text-slate-500 mt-2">
+                  or click to select a file from your device
+                </p>
+
+                <input
+                  id="fileInput"
+                  type="file"
+                  accept=".pdf,.xlsx,.xls,.doc,.docx"
+                  class="hidden"
+                />
+
+                <button
+                  id="chooseFileButton"
+                  type="button"
+                  class="mt-5 px-5 py-2.5 border border-slate-300 rounded-xl font-semibold hover:bg-slate-50"
+                >
+                  Choose File
+                </button>
+
+                <p id="selectedFile" class="text-sm text-blue-600 font-semibold mt-4"></p>
+              </div>
+
+              <button
+                id="submitProject"
+                disabled
+                class="w-full mt-5 rounded-xl py-3.5 font-bold bg-slate-200 text-slate-400 cursor-not-allowed transition"
+              >
+                Submit Project
+              </button>
+
+            </div>
+
+
+            <!-- Project status -->
+            <aside class="bg-slate-950 text-white rounded-2xl p-6">
+
+              <p class="text-blue-300 text-sm font-semibold">
+                PROJECT STATUS
+              </p>
+
+              <div class="mt-6 space-y-6">
+
+                <div class="flex gap-4">
+                  <div class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-sm">
+                    ✓
+                  </div>
+                  <div>
+                    <p class="font-semibold">Brief Received</p>
+                    <p class="text-xs text-slate-400 mt-1">Completed</p>
+                  </div>
+                </div>
+
+                <div class="w-px h-5 bg-slate-700 ml-4"></div>
+
+                <div class="flex gap-4">
+                  <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-sm">
+                    2
+                  </div>
+                  <div>
+                    <p class="font-semibold">Work on Project</p>
+                    <p class="text-xs text-blue-300 mt-1">Current stage</p>
+                  </div>
+                </div>
+
+                <div class="w-px h-5 bg-slate-700 ml-4"></div>
+
+                <div class="flex gap-4">
+                  <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-sm">
+                    3
+                  </div>
+                  <div>
+                    <p class="font-semibold text-slate-400">Submit</p>
+                    <p class="text-xs text-slate-500 mt-1">Pending</p>
+                  </div>
+                </div>
+
+                <div class="w-px h-5 bg-slate-700 ml-4"></div>
+
+                <div class="flex gap-4">
+                  <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-sm">
+                    4
+                  </div>
+                  <div>
+                    <p class="font-semibold text-slate-400">Verification</p>
+                    <p class="text-xs text-slate-500 mt-1">Pending</p>
+                  </div>
+                </div>
+
+              </div>
+            </aside>
+
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- =====================================================
+           VIEW 3 — PORTFOLIO BUILDER
+           ===================================================== -->
+      <section id="portfolioView" class="app-page hidden-view fade-in px-4 sm:px-6 lg:px-8 py-8">
+
+        <div class="max-w-7xl mx-auto">
+
+          <div class="mb-8">
+            <p class="text-sm text-blue-600 font-semibold">CAREER SHOWCASE</p>
+            <h1 class="text-3xl sm:text-4xl font-extrabold mt-1">
+              Portfolio Builder 💼
+            </h1>
+            <p class="text-slate-500 mt-2 max-w-2xl">
+              Your portfolio turns your learning journey into evidence of what
+              you can actually do.
+            </p>
+          </div>
+
+
+          <div class="grid lg:grid-cols-3 gap-6">
+
+            <!-- Public profile -->
+            <div class="lg:col-span-2 bg-white border border-slate-200 rounded-3xl shadow-soft overflow-hidden">
+
+              <div class="h-32 bg-gradient-to-r from-blue-700 to-indigo-700"></div>
+
+              <div class="px-6 sm:px-8 pb-8">
+
+                <div class="-mt-12 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
+
+                  <div class="flex items-end gap-4">
+                    <div
+                      id="portfolioAvatar"
+                      class="w-24 h-24 rounded-2xl bg-white border-4 border-white shadow-lg flex items-center justify-center text-2xl font-extrabold text-blue-700"
+                    >
+                      RC
+                    </div>
+
+                    <div class="pb-1">
+                      <h2 id="portfolioName" class="text-2xl font-extrabold">
+                        Rosemary Chisom
+                      </h2>
+
+                      <p class="text-blue-600 font-semibold">
+                        AI Data Analyst
+                      </p>
+
+                      <p class="text-sm text-slate-500 mt-1">
+                        NOUN Enugu • Information Technology
+                      </p>
+                    </div>
+                  </div>
+
+                  <span class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-emerald-50 text-emerald-700 text-xs font-bold">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    Profile Verified
+                  </span>
+                </div>
+
+
+                <!-- About -->
+                <div class="mt-10">
+                  <h3 class="font-bold text-lg">Career Profile</h3>
+
+                  <p class="text-slate-600 leading-7 mt-2">
+                    Emerging digital professional focused on AI-assisted data
+                    analysis, workplace productivity and practical business
+                    problem-solving.
+                  </p>
+                </div>
+
+
+                <!-- Badges -->
+                <div class="mt-8">
+                  <div class="flex items-center justify-between">
+                    <h3 class="font-bold text-lg">Verified Capability Badges</h3>
+                    <span class="text-sm text-slate-400">5 earned</span>
+                  </div>
+
+                  <div class="grid sm:grid-cols-2 gap-3 mt-4">
+
+                    <div class="flex gap-3 items-center border border-slate-200 rounded-xl p-4">
+                      <div class="w-11 h-11 rounded-xl bg-blue-100 flex items-center justify-center">
+                        🤖
+                      </div>
+                      <div>
+                        <p class="font-semibold">AI Productivity</p>
+                        <p class="text-xs text-emerald-600">Verified capability</p>
+                      </div>
+                    </div>
+
+                    <div class="flex gap-3 items-center border border-slate-200 rounded-xl p-4">
+                      <div class="w-11 h-11 rounded-xl bg-purple-100 flex items-center justify-center">
+                        📊
+                      </div>
+                      <div>
+                        <p class="font-semibold">Data Analysis</p>
+                        <p class="text-xs text-emerald-600">Verified capability</p>
+                      </div>
+                    </div>
+
+                    <div class="flex gap-3 items-center border border-slate-200 rounded-xl p-4">
+                      <div class="w-11 h-11 rounded-xl bg-orange-100 flex items-center justify-center">
+                        📈
+                      </div>
+                      <div>
+                        <p class="font-semibold">Excel Analytics</p>
+                        <p class="text-xs text-emerald-600">Verified capability</p>
+                      </div>
+                    </div>
+
+                    <div class="flex gap-3 items-center border border-slate-200 rounded-xl p-4">
+                      <div class="w-11 h-11 rounded-xl bg-emerald-100 flex items-center justify-center">
+                        💼
+                      </div>
+                      <div>
+                        <p class="font-semibold">Business Problem Solving</p>
+                        <p class="text-xs text-emerald-600">Verified capability</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+
+                <!-- Projects -->
+                <div class="mt-8">
+                  <h3 class="font-bold text-lg">Completed Projects</h3>
+
+                  <div class="space-y-3 mt-4">
+
+                    <div class="border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                      <div>
+                        <p class="font-semibold">
+                          Customer Sales Dashboard
+                        </p>
+                        <p class="text-xs text-slate-500 mt-1">
+                          Excel • Data Analysis • Business Reporting
+                        </p>
+                      </div>
+
+                      <span class="text-xs font-bold text-emerald-600">
+                        ✓ Verified
+                      </span>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                      <div>
+                        <p class="font-semibold">
+                          AI-Assisted Market Research
+                        </p>
+                        <p class="text-xs text-slate-500 mt-1">
+                          Generative AI • Research • Documentation
+                        </p>
+                      </div>
+
+                      <span class="text-xs font-bold text-emerald-600">
+                        ✓ Verified
+                      </span>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                      <div>
+                        <p class="font-semibold">
+                          Inventory Optimization
+                        </p>
+                        <p class="text-xs text-slate-500 mt-1">
+                          Excel • AI • Retail Analytics
+                        </p>
+                      </div>
+
+                      <span class="text-xs font-bold text-blue-600">
+                        In Progress
+                      </span>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+
+            <!-- Portfolio controls -->
+            <aside class="space-y-5">
+
+              <div class="bg-slate-950 text-white rounded-2xl p-6">
+                <p class="text-blue-300 text-sm font-semibold">
+                  PORTFOLIO READINESS
+                </p>
+
+                <div class="flex items-end gap-2 mt-4">
+                  <span class="text-4xl font-extrabold">78%</span>
+                  <span class="text-slate-400 text-sm mb-1">complete</span>
+                </div>
+
+                <div class="h-2 bg-white/10 rounded-full overflow-hidden mt-4">
+                  <div class="h-full bg-blue-500 rounded-full" style="width:78%"></div>
+                </div>
+
+                <p class="text-sm text-slate-400 leading-6 mt-4">
+                  Complete your active project and add your strongest work sample
+                  to reach 100%.
+                </p>
+              </div>
+
+
+              <div class="bg-white border border-slate-200 rounded-2xl p-6">
+
+                <h3 class="font-bold text-lg">Share Your Portfolio</h3>
+
+                <p class="text-sm text-slate-500 mt-2 leading-6">
+                  Copy your public Skill2Bridge portfolio link and share it with
+                  employers, mentors or clients.
+                </p>
+
+                <div class="mt-5 flex">
+                  <input
+                    id="portfolioLink"
+                    type="text"
+                    readonly
+                    value="https://skill2bridge.ng/p/rosemary-chisom"
+                    class="min-w-0 flex-1 rounded-l-xl border border-r-0 border-slate-300 bg-slate-50 px-3 py-3 text-xs text-slate-500 outline-none"
+                  />
+
+                  <button
+                    id="copyPortfolioButton"
+                    class="rounded-r-xl bg-blue-600 hover:bg-blue-700 text-white px-4 font-bold text-sm transition"
+                  >
+                    Copy
+                  </button>
+                </div>
+
+                <p id="copyMessage" class="text-xs text-emerald-600 font-semibold mt-3 hidden">
+                  Portfolio link copied!
+                </p>
+              </div>
+
+
+              <div class="bg-blue-50 border border-blue-100 rounded-2xl p-6">
+                <p class="text-2xl">💡</p>
+                <h3 class="font-bold mt-3">Portfolio Tip</h3>
+                <p class="text-sm text-slate-600 leading-6 mt-2">
+                  Employers care about evidence. For every project, explain the
+                  problem, what you did, the tools you used and the result.
+                </p>
+              </div>
+
+            </aside>
+
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+
+  <!-- =========================================================
+       JAVASCRIPT
+       ========================================================= -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+      /* -------------------------------------------------------
+         APPLICATION STATE
+         ------------------------------------------------------- */
+
+      const state = {
+        currentView: "dashboard",
+        studentName: "Rosemary Chisom",
+        studentEmail: "student@example.com",
+        selectedFile: null
+      };
+
+
+      /* -------------------------------------------------------
+         ELEMENT REFERENCES
+         ------------------------------------------------------- */
+
+      const authView = document.getElementById("authView");
+      const appView = document.getElementById("appView");
+
+      const loginForm = document.getElementById("loginForm");
+
+      const sidebar = document.getElementById("sidebar");
+      const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+      const openSidebar = document.getElementById("openSidebar");
+      const closeSidebar = document.getElementById("closeSidebar");
+
+      const logoutButton = document.getElementById("logoutButton");
+
+      const pageTitle = document.getElementById("pageTitle");
+      const topStudentName = document.getElementById("topStudentName");
+      const welcomeName = document.getElementById("welcomeName");
+
+      const avatar = document.getElementById("avatar");
+      const portfolioAvatar = document.getElementById("portfolioAvatar");
+      const portfolioName = document.getElementById("portfolioName");
+
+      const navButtons = document.querySelectorAll(".nav-button");
+
+      const pages = {
+        dashboard: document.getElementById("dashboardView"),
+        projects: document.getElementById("projectsView"),
+        portfolio: document.getElementById("portfolioView")
+      };
+
+
+      /* -------------------------------------------------------
+         IN-APP NOTIFICATION SYSTEM
+         ------------------------------------------------------- */
+
+      const appToast = document.getElementById("appToast");
+      const toastIcon = document.getElementById("toastIcon");
+      const toastTitle = document.getElementById("toastTitle");
+      const toastMessage = document.getElementById("toastMessage");
+      const toastClose = document.getElementById("toastClose");
+      const toastProgress = document.getElementById("toastProgress");
+
+      let toastTimer = null;
+
+      const toastTypes = {
+        success: { icon: "✓", live: "polite" },
+        info: { icon: "i", live: "polite" },
+        warning: { icon: "!", live: "assertive" },
+        error: { icon: "×", live: "assertive" }
+      };
+
+      function hideToast() {
+        if (toastTimer) {
+          clearTimeout(toastTimer);
+          toastTimer = null;
+        }
+
+        appToast.classList.remove("is-visible");
+        appToast.setAttribute("aria-hidden", "true");
+      }
+
+      function showToast(title, message, type = "success", duration = 4000) {
+        const config = toastTypes[type] || toastTypes.success;
+
+        if (toastTimer) {
+          clearTimeout(toastTimer);
+          toastTimer = null;
+        }
+
+        appToast.dataset.type = type;
+        appToast.style.setProperty("--toast-duration", `${duration}ms`);
+        appToast.setAttribute("aria-live", config.live);
+        appToast.setAttribute("aria-hidden", "false");
+
+        toastIcon.textContent = config.icon;
+        toastTitle.textContent = title;
+        toastMessage.textContent = message;
+
+        // Restart the progress animation reliably when a toast is shown again.
+        toastProgress.style.animation = "none";
+        void toastProgress.offsetWidth;
+        toastProgress.style.animation = "";
+
+        appToast.classList.remove("is-visible");
+        void appToast.offsetWidth;
+        appToast.classList.add("is-visible");
+
+        toastTimer = setTimeout(hideToast, duration);
+      }
+
+      toastClose.addEventListener("click", hideToast);
+
+      appToast.addEventListener("mouseenter", () => {
+        if (toastTimer) {
+          clearTimeout(toastTimer);
+          toastTimer = null;
+        }
+
+        toastProgress.style.animationPlayState = "paused";
+      });
+
+      appToast.addEventListener("mouseleave", () => {
+        if (!appToast.classList.contains("is-visible")) {
+          return;
+        }
+
+        toastProgress.style.animationPlayState = "running";
+        toastTimer = setTimeout(hideToast, 1800);
+      });
+
+
+      /* -------------------------------------------------------
+         HELPER FUNCTIONS
+         ------------------------------------------------------- */
+
+      function getInitials(name) {
+        const words = name
+          .trim()
+          .split(/\s+/)
+          .filter(Boolean);
+
+        if (words.length === 0) {
+          return "S";
+        }
+
+        if (words.length === 1) {
+          return words[0].substring(0, 2).toUpperCase();
+        }
+
+        return (
+          words[0].charAt(0) +
+          words[words.length - 1].charAt(0)
+        ).toUpperCase();
+      }
+
+
+      function updateStudentDetails() {
+        const initials = getInitials(state.studentName);
+
+        topStudentName.textContent = state.studentName;
+        welcomeName.textContent = state.studentName.toUpperCase();
+
+        avatar.textContent = initials;
+        portfolioAvatar.textContent = initials;
+        portfolioName.textContent = state.studentName;
+      }
+
+
+      function openApplication() {
+        authView.classList.add("hidden-view");
+        appView.classList.remove("hidden-view");
+
+        updateStudentDetails();
+        switchView("dashboard");
+      }
+
+
+      function showAuth() {
+        appView.classList.add("hidden-view");
+        authView.classList.remove("hidden-view");
+
+        closeMobileSidebar();
+      }
+
+
+      /* -------------------------------------------------------
+         VIEW SWITCHING
+         ------------------------------------------------------- */
+
+      function switchView(viewName) {
+        if (!pages[viewName]) {
+          return;
+        }
+
+        state.currentView = viewName;
+
+        Object.entries(pages).forEach(([name, page]) => {
+          page.classList.toggle("hidden-view", name !== viewName);
+        });
+
+        const titles = {
+          dashboard: "Student Dashboard",
+          projects: "The Project Arena",
+          portfolio: "Portfolio Builder"
+        };
+
+        pageTitle.textContent = titles[viewName];
+
+        navButtons.forEach((button) => {
+          const isActive = button.dataset.view === viewName;
+
+          button.classList.toggle("bg-blue-600", isActive);
+          button.classList.toggle("text-white", isActive);
+          button.classList.toggle("text-slate-300", !isActive);
+          button.classList.toggle("hover:bg-white/10", !isActive);
+        });
+
+        closeMobileSidebar();
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      }
+
+
+      /* -------------------------------------------------------
+         LOGIN
+         ------------------------------------------------------- */
+
+      loginForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const nameInput = document.getElementById("studentName");
+        const emailInput = document.getElementById("studentEmail");
+        const passwordInput = document.getElementById("studentPassword");
+
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        if (!name || !email || !password) {
+          showToast(
+            "Complete your details",
+            "Please enter your name, email and password before continuing.",
+            "warning"
+          );
+          return;
+        }
+
+        if (password.length < 6) {
+          showToast(
+            "Password too short",
+            "Your password must contain at least 6 characters.",
+            "warning"
+          );
+          return;
+        }
+
+        state.studentName = name;
+        state.studentEmail = email;
+
+        sessionStorage.setItem(
+          "skill2bridgeStudent",
+          JSON.stringify({
+            name,
+            email
+          })
+        );
+
+        openApplication();
+
+        showToast(
+          "Welcome to Skill2Bridge",
+          "Your student workspace is ready. Continue building practical evidence for your digital career.",
+          "success",
+          5000
+        );
+      });
+
+
+      /* -------------------------------------------------------
+         RESTORE LOCAL SESSION
+         ------------------------------------------------------- */
+
+      const savedStudent = sessionStorage.getItem("skill2bridgeStudent");
+
+      if (savedStudent) {
+        try {
+          const parsedStudent = JSON.parse(savedStudent);
+
+          if (parsedStudent.name && parsedStudent.email) {
+            state.studentName = parsedStudent.name;
+            state.studentEmail = parsedStudent.email;
+
+            openApplication();
+          }
+        } catch (error) {
+          sessionStorage.removeItem("skill2bridgeStudent");
+        }
+      }
+
+
+      /* -------------------------------------------------------
+         LOGOUT
+         ------------------------------------------------------- */
+
+      logoutButton.addEventListener("click", () => {
+        sessionStorage.removeItem("skill2bridgeStudent");
+
+        state.studentName = "Rosemary Chisom";
+        state.studentEmail = "student@example.com";
+        state.selectedFile = null;
+
+        showAuth();
+      });
+
+
+      /* -------------------------------------------------------
+         NAVIGATION
+         ------------------------------------------------------- */
+
+      navButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          switchView(button.dataset.view);
+        });
+      });
+
+
+      document.querySelectorAll(".quick-nav").forEach((button) => {
+        button.addEventListener("click", () => {
+          switchView(button.dataset.viewTarget);
+        });
+      });
+
+
+      /* -------------------------------------------------------
+         MOBILE SIDEBAR
+         ------------------------------------------------------- */
+
+      function openMobileSidebar() {
+        sidebar.classList.remove("mobile-sidebar-hidden");
+        sidebar.classList.add("mobile-sidebar-visible");
+
+        sidebarOverlay.classList.remove("hidden");
+      }
+
+
+      function closeMobileSidebar() {
+        sidebar.classList.remove("mobile-sidebar-visible");
+        sidebar.classList.add("mobile-sidebar-hidden");
+
+        sidebarOverlay.classList.add("hidden");
+      }
+
+
+      openSidebar.addEventListener("click", openMobileSidebar);
+      closeSidebar.addEventListener("click", closeMobileSidebar);
+      sidebarOverlay.addEventListener("click", closeMobileSidebar);
+
+
+      /* -------------------------------------------------------
+         COURSE BUTTONS
+         ------------------------------------------------------- */
+
+      document.querySelectorAll(".courseButton").forEach((button) => {
+        button.addEventListener("click", () => {
+          const courseName = button.dataset.course;
+
+          if (courseName === "Practical AI for Workplace Productivity") {
+            showToast(
+              "Course opened",
+              "Practical AI for Workplace Productivity is ready. Your next module is AI-Assisted Data Analysis.",
+              "success",
+              5200
+            );
+          } else {
+            showToast(
+              "Course available",
+              courseName + " is in your learning path and ready for the next learning experience.",
+              "info"
+            );
+          }
+        });
+      });
+
+
+      /* -------------------------------------------------------
+         CONTINUE LEARNING
+         ------------------------------------------------------- */
+
+      document.getElementById("continueLearningButton").addEventListener("click", () => {
+        showToast(
+          "Continuing your learning",
+          "Practical AI for Workplace Productivity • Next module: AI-Assisted Data Analysis.",
+          "info",
+          4500
+        );
+      });
+
+
+      /* -------------------------------------------------------
+         BADGE BUTTON
+         ------------------------------------------------------- */
+
+      document.getElementById("badgeButton").addEventListener("click", () => {
+        showToast(
+          "Capability progress",
+          "Four capabilities are verified. Project Verification is your next badge.",
+          "success",
+          4800
+        );
+      });
+
+
+      /* -------------------------------------------------------
+         DOWNLOAD PROJECT BRIEF
+         ------------------------------------------------------- */
+
+      document.getElementById("downloadBrief").addEventListener("click", () => {
+
+        const briefContent = `
+SKILL2BRIDGE
+PROJECT ARENA
+
+Project #1: Inventory Optimization using Excel/AI for Enugu Retail Hub
+
+Partner:
+Enugu Retail Hub
+
+BUSINESS SCENARIO
+Enugu Retail Hub wants to reduce products that remain too long in stock
+while avoiding shortages of fast-moving items.
+
+TASK
+Analyze the provided inventory information and recommend practical
+improvements using Excel and AI-assisted analysis.
+
+EXPECTED DELIVERABLES
+1. Clean and organize the inventory dataset.
+2. Identify fast-moving and slow-moving products.
+3. Use AI to support analysis and recommendations.
+4. Prepare a short business recommendation report.
+
+SKILLS
+Excel
+AI
+Data Analysis
+Business Problem Solving
+
+SUBMISSION
+Submit your completed work through the Skill2Bridge Project Arena.
+
+Good luck!
+        `.trim();
+
+        const blob = new Blob([briefContent], {
+          type: "text/plain;charset=utf-8"
+        });
+
+        const url = URL.createObjectURL(blob);
+
+        const downloadLink = document.createElement("a");
+        downloadLink.href = url;
+        downloadLink.download = "Skill2Bridge_Project_1_Inventory_Optimization_Brief.txt";
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        downloadLink.remove();
+
+        URL.revokeObjectURL(url);
+
+        showToast(
+          "Brief downloaded",
+          "Project #1 inventory optimization brief is ready for your work.",
+          "success"
+        );
+      });
+
+
+      /* -------------------------------------------------------
+         FILE UPLOAD
+         ------------------------------------------------------- */
+
+      const dropZone = document.getElementById("dropZone");
+      const fileInput = document.getElementById("fileInput");
+      const chooseFileButton = document.getElementById("chooseFileButton");
+      const selectedFile = document.getElementById("selectedFile");
+      const submitProject = document.getElementById("submitProject");
+
+
+      function processSelectedFile(file) {
+        if (!file) {
+          return;
+        }
+
+        const allowedExtensions = [
+          ".pdf",
+          ".xlsx",
+          ".xls",
+          ".doc",
+          ".docx"
+        ];
+
+        const lowerName = file.name.toLowerCase();
+
+        const validExtension = allowedExtensions.some((extension) =>
+          lowerName.endsWith(extension)
+        );
+
+        if (!validExtension) {
+          showToast(
+            "Unsupported file",
+            "Please upload a PDF, Excel or Word document.",
+            "error"
+          );
+
+          fileInput.value = "";
+          state.selectedFile = null;
+          updateSubmitButton();
+          return;
+        }
+
+        const maxSize = 10 * 1024 * 1024;
+
+        if (file.size > maxSize) {
+          showToast(
+            "File is too large",
+            "Please upload a file smaller than 10 MB.",
+            "error"
+          );
+
+          fileInput.value = "";
+          state.selectedFile = null;
+          updateSubmitButton();
+          return;
+        }
+
+        state.selectedFile = file;
+
+        const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+
+        selectedFile.textContent =
+          "Selected: " + file.name + " (" + sizeInMB + " MB)";
+
+        updateSubmitButton();
+
+        showToast(
+          "File ready",
+          file.name + " is ready to submit for project review.",
+          "success",
+          3200
+        );
+      }
+
+
+      function updateSubmitButton() {
+        if (state.selectedFile) {
+          submitProject.disabled = false;
+          submitProject.classList.remove(
+            "bg-slate-200",
+            "text-slate-400",
+            "cursor-not-allowed"
+          );
+
+          submitProject.classList.add(
+            "bg-blue-600",
+            "hover:bg-blue-700",
+            "text-white"
+          );
+        } else {
+          submitProject.disabled = true;
+
+          submitProject.classList.add(
+            "bg-slate-200",
+            "text-slate-400",
+            "cursor-not-allowed"
+          );
+
+          submitProject.classList.remove(
+            "bg-blue-600",
+            "hover:bg-blue-700",
+            "text-white"
+          );
+        }
+      }
+
+
+      chooseFileButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        fileInput.click();
+      });
+
+
+      dropZone.addEventListener("click", () => {
+        fileInput.click();
+      });
+
+
+      fileInput.addEventListener("change", () => {
+        const file = fileInput.files[0];
+        processSelectedFile(file);
+      });
+
+
+      dropZone.addEventListener("dragover", (event) => {
+        event.preventDefault();
+
+        dropZone.classList.add("drag-over");
+      });
+
+
+      dropZone.addEventListener("dragleave", (event) => {
+        if (!dropZone.contains(event.relatedTarget)) {
+          dropZone.classList.remove("drag-over");
+        }
+      });
+
+
+      dropZone.addEventListener("drop", (event) => {
+        event.preventDefault();
+
+        dropZone.classList.remove("drag-over");
+
+        const file = event.dataTransfer.files[0];
+
+        processSelectedFile(file);
+      });
+
+
+      /* -------------------------------------------------------
+         SUBMIT PROJECT
+         ------------------------------------------------------- */
+
+      submitProject.addEventListener("click", () => {
+
+        if (!state.selectedFile) {
+          showToast(
+            "No project selected",
+            "Choose your completed project file before submitting.",
+            "warning"
+          );
+          return;
+        }
+
+        const fileName = state.selectedFile.name;
+
+        submitProject.disabled = true;
+        submitProject.textContent = "Submitting...";
+
+        setTimeout(() => {
+
+          submitProject.textContent = "Project Submitted ✓";
+
+          submitProject.classList.remove("bg-blue-600", "hover:bg-blue-700");
+          submitProject.classList.add("bg-emerald-600");
+
+          showToast(
+            "Project submitted",
+            fileName + " has been received successfully and is now awaiting review.",
+            "success",
+            5200
+          );
+
+          const statusText = document.querySelector(
+            "#projectsView aside .text-blue-300"
+          );
+
+          if (statusText) {
+            statusText.textContent = "SUBMISSION RECEIVED";
+          }
+
+        }, 900);
+      });
+
+
+      /* -------------------------------------------------------
+         COPY PORTFOLIO LINK
+         ------------------------------------------------------- */
+
+      const copyPortfolioButton = document.getElementById("copyPortfolioButton");
+      const portfolioLink = document.getElementById("portfolioLink");
+      const copyMessage = document.getElementById("copyMessage");
+
+
+      copyPortfolioButton.addEventListener("click", async () => {
+
+        const link = portfolioLink.value;
+
+        try {
+          await navigator.clipboard.writeText(link);
+
+          copyMessage.classList.remove("hidden");
+
+          copyPortfolioButton.textContent = "Copied!";
+
+          setTimeout(() => {
+            copyMessage.classList.add("hidden");
+            copyPortfolioButton.textContent = "Copy";
+          }, 2000);
+
+        } catch (error) {
+
+          portfolioLink.select();
+          portfolioLink.setSelectionRange(0, 99999);
+
+          try {
+            document.execCommand("copy");
+
+            copyMessage.classList.remove("hidden");
+            copyPortfolioButton.textContent = "Copied!";
+
+            setTimeout(() => {
+              copyMessage.classList.add("hidden");
+              copyPortfolioButton.textContent = "Copy";
+            }, 2000);
+
+          } catch (fallbackError) {
+            showToast(
+              "Copy unsuccessful",
+              "Your browser blocked automatic copying. Select the portfolio link and copy it manually.",
+              "warning",
+              5000
+            );
+          }
+        }
+      });
+
+
+      /* -------------------------------------------------------
+         KEYBOARD ACCESSIBILITY
+         ------------------------------------------------------- */
+
+      document.addEventListener("keydown", (event) => {
+
+        if (event.key === "Escape") {
+          closeMobileSidebar();
+        }
+
+      });
+
+
+      /* -------------------------------------------------------
+         INITIAL UI STATE
+         ------------------------------------------------------- */
+
+      updateStudentDetails();
+      updateSubmitButton();
+
+    });
+  </script>
+
+</body>
+</html>
+
